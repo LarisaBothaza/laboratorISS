@@ -1,16 +1,16 @@
 package server;
 
-import biblioteca.Abonat;
-import biblioteca.Bibliotecar;
-import biblioteca.Carte;
+import biblioteca.*;
 import persistance.AbonatRepository;
 import persistance.BibliotecarRepository;
 import persistance.CarteRepository;
+import persistance.ImprumutRepository;
 import services.BibliotecaException;
 import services.IBibliotecaObserver;
 import services.IBibliotecaServices;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,16 +22,18 @@ public class ServiceImplementation implements IBibliotecaServices {
     private BibliotecarRepository bibliotecarRepository;
     private AbonatRepository abonatRepository;
     private CarteRepository carteRepository;
+    private ImprumutRepository imprumutRepository;
 
     private Map<Integer,IBibliotecaObserver> bibliotecariLogati;
     private Map<Integer,IBibliotecaObserver> abonatiLogati;
 
     public ServiceImplementation(BibliotecarRepository bibliotecarRepository, AbonatRepository abonatRepository,
-                                 CarteRepository carteRepository) {
+                                 CarteRepository carteRepository, ImprumutRepository imprumutRepository) {
 
         this.bibliotecarRepository = bibliotecarRepository;
         this.abonatRepository = abonatRepository;
         this.carteRepository = carteRepository;
+        this.imprumutRepository = imprumutRepository;
 
         bibliotecariLogati = new ConcurrentHashMap<>();
         abonatiLogati = new ConcurrentHashMap<>();
@@ -52,6 +54,8 @@ public class ServiceImplementation implements IBibliotecaServices {
             throw new BibliotecaException("Autentificare esuata!");
         }
     }
+
+
 
     @Override
     public synchronized void logoutB(Bibliotecar bibliotecar, IBibliotecaObserver client) throws BibliotecaException {
@@ -76,6 +80,10 @@ public class ServiceImplementation implements IBibliotecaServices {
     }
 
     @Override
+    public Abonat abonatConectat(String username, String parola) {
+        return abonatRepository.findAbonatByUsernameParola(username,parola);
+    }
+    @Override
     public synchronized void logoutA(Abonat abonat, IBibliotecaObserver client) throws BibliotecaException {
         abonatiLogati.remove(abonat);
     }
@@ -88,6 +96,19 @@ public class ServiceImplementation implements IBibliotecaServices {
     @Override
     public synchronized List<Carte> getToateCartileDisponibile() {
         return carteRepository.toateCartileDisponibile();
+    }
+
+    @Override
+    public List<CarteDTO> getToateCartileImprumutate(int idAbonat) {
+        List<CarteDTO> listaCartiDTO = new ArrayList<>();
+        List<Imprumut> impumuturiActive = imprumutRepository.getImprumuturiActiveAbonat(idAbonat);
+        impumuturiActive.forEach(imprumut->{
+            Carte carte = carteRepository.findById(imprumut.getIdCarte());
+            CarteDTO carteDTO = new CarteDTO(carte.getTitlu(), carte.getAutor(), carte.getDisponibila(), imprumut.getDataImprumut());
+            carteDTO.setId(carte.getId());
+            listaCartiDTO.add(carteDTO);
+        });
+        return listaCartiDTO;
     }
 
     @Override
@@ -113,6 +134,8 @@ public class ServiceImplementation implements IBibliotecaServices {
 
         notifyCarteUpdated();
     }
+
+
 
     private final int defaultThreadsNo=5;
 

@@ -6,24 +6,19 @@
        http://www.springframework.org/schema/util
        http://www.springframework.org/schema/util/spring-util.xsd" >
 
-    <bean id="hibernateUtility" class="persistance.jdbc.HibernateUtility"/>
+    <bean id="bibliotecarHibernate" class="persistance.jdbc.BibliotecarHibernateRepo"/>
 
-    <bean id="bibliotecarHibernate" class="persistance.jdbc.BibliotecarHibernateRepo">
-        <constructor-arg ref="hibernateUtility" />
-    </bean>
+    <bean id="abonatHibernate" class="persistance.jdbc.AbonatHibernateRepo"/>
 
-    <bean id="abonatHibernate" class="persistance.jdbc.AbonatHibernateRepo">
-        <constructor-arg ref="hibernateUtility" />
-    </bean>
+    <bean id="carteHibernate" class="persistance.jdbc.CarteHibernateRepo"/>
 
-    <bean id="carteHibernate" class="persistance.jdbc.CarteHibernateRepo">
-        <constructor-arg ref="hibernateUtility" />
-    </bean>
+    <bean id="imprumutHibernate" class="persistance.jdbc.ImprumutHibernateRepo"/>
 
     <bean id="bibliotecaService" class="server.ServiceImplementation">
         <constructor-arg ref="bibliotecarHibernate" />
         <constructor-arg ref="abonatHibernate" />
         <constructor-arg ref="carteHibernate" />
+        <constructor-arg ref="imprumutHibernate" />
     </bean>
 
     <bean class="org.springframework.remoting.rmi.RmiServiceExporter">

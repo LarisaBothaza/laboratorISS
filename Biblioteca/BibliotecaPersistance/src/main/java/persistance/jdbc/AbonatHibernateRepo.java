@@ -13,8 +13,8 @@ public class AbonatHibernateRepo implements AbonatRepository {
 
     static SessionFactory sessionFactory;
 
-    public AbonatHibernateRepo(HibernateUtility hibernateUtility){
-        sessionFactory = hibernateUtility.getSessionFactory();
+    public AbonatHibernateRepo(){
+        sessionFactory = HibernateUtility.getSessionFactory();
         System.out.println("AbonatHibernateRepo" + sessionFactory);
     }
 

@@ -3,6 +3,7 @@ package controllers;
 import biblioteca.Abonat;
 import biblioteca.Bibliotecar;
 import biblioteca.Carte;
+import biblioteca.CarteDTO;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,14 +22,19 @@ public class AbonatController extends UnicastRemoteObject implements IBiblioteca
     private IBibliotecaServices service;
     private Abonat abonatConectat;
     private ObservableList<Carte> modelCartiDisponibile = FXCollections.observableArrayList();
+    private ObservableList<CarteDTO> modelCartiImprumutate = FXCollections.observableArrayList();
 
     public AbonatController() throws RemoteException { }
 
     @FXML
     TableView<Carte> tabelCartiDisponibile;
 
+    @FXML
+    TableView<CarteDTO> tabelCartiImprumutate;
+
     public void initialize() {
         tabelCartiDisponibile.setItems(modelCartiDisponibile);
+        tabelCartiImprumutate.setItems(modelCartiImprumutate);
     }
 
     public void setContext(IBibliotecaServices service) throws RemoteException{
@@ -44,13 +50,15 @@ public class AbonatController extends UnicastRemoteObject implements IBiblioteca
         }
     }
 
-    public void setAbonatConectat(Abonat abonatConectat) throws BibliotecaException {
-        this.abonatConectat = abonatConectat;
+    public void setAbonatConectat(Abonat abonatDummyConectat) throws BibliotecaException {
+        this.abonatConectat = service.abonatConectat(abonatDummyConectat.getUsername(), abonatDummyConectat.getParola());
         initModel();
     }
 
     public void initModel()  {
+
         modelCartiDisponibile.setAll(service.getToateCartileDisponibile());
+        modelCartiImprumutate.setAll(service.getToateCartileImprumutate(abonatConectat.getId()));
     }
 
 

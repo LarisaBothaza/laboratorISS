@@ -15,8 +15,8 @@ public class BibliotecarHibernateRepo implements BibliotecarRepository {
 
     static SessionFactory sessionFactory;
 
-    public BibliotecarHibernateRepo(HibernateUtility hibernateUtility){
-        sessionFactory = hibernateUtility.getSessionFactory();
+    public BibliotecarHibernateRepo(){
+        sessionFactory = HibernateUtility.getSessionFactory();
         System.out.println("BibliotecarHibernateRepo" + sessionFactory);
     }
 

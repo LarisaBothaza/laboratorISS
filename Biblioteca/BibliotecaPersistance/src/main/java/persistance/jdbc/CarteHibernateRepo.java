@@ -2,6 +2,7 @@ package persistance.jdbc;
 
 import biblioteca.Bibliotecar;
 import biblioteca.Carte;
+import biblioteca.Imprumut;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -13,8 +14,8 @@ public class CarteHibernateRepo implements CarteRepository {
 
     static SessionFactory sessionFactory;
 
-    public CarteHibernateRepo(HibernateUtility hibernateUtility){
-        sessionFactory = hibernateUtility.getSessionFactory();
+    public CarteHibernateRepo(){
+        sessionFactory = HibernateUtility.getSessionFactory();
         System.out.println("CarteHibernateRepo" + sessionFactory);
     }
 
@@ -85,8 +86,23 @@ public class CarteHibernateRepo implements CarteRepository {
     }
 
     @Override
-    public Carte findById(Integer integer) {
-        return null;
+    public Carte findById(Integer id) {
+        Carte result = null;
+        try(Session session = sessionFactory.openSession()){
+            Transaction transaction = null;
+            try{
+                transaction = session.beginTransaction();
+                result = session.createQuery("from Carte where id = ? ", Carte.class)
+                        .setParameter(0,id).uniqueResult();
+
+                transaction.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+                if(transaction !=null)
+                    transaction.rollback();
+            }
+        }
+        return result;
     }
 
     @Override
@@ -126,4 +142,6 @@ public class CarteHibernateRepo implements CarteRepository {
         }
         return result;
     }
+
+
 }

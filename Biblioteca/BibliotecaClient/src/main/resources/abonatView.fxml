@@ -20,7 +20,7 @@
                         <PropertyValueFactory property="titlu" />
                     </cellValueFactory>
                 </TableColumn>
-                  <TableColumn fx:id="tableColumnTOATEAutor" prefWidth="100.0" text="Autor">
+                 <TableColumn fx:id="tableColumnTOATEAutor" prefWidth="100.0" text="Autor">
                       <cellValueFactory>
                           <PropertyValueFactory property="autor" />
                       </cellValueFactory>
@@ -29,14 +29,30 @@
             </TableColumn>
         </columns>
       </TableView>
-      <TableView layoutX="369.0" layoutY="202.0" prefHeight="179.0" prefWidth="431.0">
+      <TableView fx:id="tabelCartiImprumutate" layoutX="369.0" layoutY="202.0" prefHeight="179.0" prefWidth="431.0">
          <columns>
             <TableColumn prefWidth="350.0" text="Carti Imprumutate">
                <columns>
-                  <TableColumn fx:id="tableColumnCodCarteImprumutate" prefWidth="60.0" text="Cod" />
-                  <TableColumn fx:id="tableColumnTitluImprumutate" prefWidth="150.0" text="Titlu" />
-                  <TableColumn fx:id="tableColumnAutorImprumutate" prefWidth="100.0" text="Autor" />
-                  <TableColumn fx:id="tableColumnDataImprumut" prefWidth="130.0" text="Data imprumut" />
+                  <TableColumn fx:id="tableColumnCodCarteImprumutate" prefWidth="60.0" text="Cod">
+                       <cellValueFactory>
+                           <PropertyValueFactory property="id" />
+                       </cellValueFactory>
+                  </TableColumn>
+                   <TableColumn fx:id="tableColumnTitluImprumutate" prefWidth="150.0" text="Titlu" >
+                       <cellValueFactory>
+                           <PropertyValueFactory property="titlu" />
+                       </cellValueFactory>
+                   </TableColumn>
+                   <TableColumn fx:id="tableColumnAutorImprumutate" prefWidth="100.0" text="Autor" >
+                       <cellValueFactory>
+                           <PropertyValueFactory property="autor" />
+                       </cellValueFactory>
+                   </TableColumn>
+                  <TableColumn fx:id="tableColumnDataImprumut" prefWidth="130.0" text="Data imprumut" >
+                      <cellValueFactory>
+                          <PropertyValueFactory property="dataImprumut" />
+                      </cellValueFactory>
+                  </TableColumn>
                </columns>
             </TableColumn>
          </columns>
