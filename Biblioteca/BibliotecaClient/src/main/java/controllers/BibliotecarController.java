@@ -169,6 +169,14 @@ public class BibliotecarController  extends UnicastRemoteObject implements IBibl
         });
     }
 
+    @Override
+    public void imprumutAdded() throws BibliotecaException, RemoteException {
+        Platform.runLater(()->{
+            modelCarti.setAll(service.getToateCartile());
+            tabelCarti.refresh();
+        });
+    }
+
 
 
 }

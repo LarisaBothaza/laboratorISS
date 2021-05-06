@@ -23,13 +23,5 @@ public interface IBibliotecaServices {
 
     public Abonat abonatConectat(String username, String parola);
 
-/*    public List<ProbaDTO> getToateProbeleDTO()throws ConcursException;
-    public List<Participant> getParticipantiInscrisiLaProba(int idProba);
-    public void inscriere(InregistrareDTO inregistrareDTO) throws ConcursException;
-    public List<ParticipantDTO> getAllParticipantiDTOptProbaData(int idProba) throws ConcursException;
-
-    public void adaugareParticipant(String nume, String prenume, int varsta) throws Exception;
-    public List<Participant> getAllParticipanti();
-    public List<Proba> getProbeleUnuiParticipant(int idParticipant);
-    public Organizator findOneOrganizatorByUsernameParola(String username,String parola);*/
+    public void imprumutaCarte(int idCarte, int idAbonat) throws Exception;
 }

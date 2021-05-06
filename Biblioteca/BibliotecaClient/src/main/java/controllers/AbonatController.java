@@ -8,7 +8,10 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import services.BibliotecaException;
 import services.IBibliotecaObserver;
 import services.IBibliotecaServices;
@@ -31,6 +34,15 @@ public class AbonatController extends UnicastRemoteObject implements IBiblioteca
 
     @FXML
     TableView<CarteDTO> tabelCartiImprumutate;
+
+    @FXML
+    TextField textFieldCodCarte;
+
+    @FXML
+    TextField textFieldTitlu;
+
+    @FXML
+    TextField textFieldAutor;
 
     public void initialize() {
         tabelCartiDisponibile.setItems(modelCartiDisponibile);
@@ -61,6 +73,32 @@ public class AbonatController extends UnicastRemoteObject implements IBiblioteca
         modelCartiImprumutate.setAll(service.getToateCartileImprumutate(abonatConectat.getId()));
     }
 
+    public void selectCarte(MouseEvent mouseEvent) {
+        Carte carteSelectata = tabelCartiDisponibile.getSelectionModel().getSelectedItem();
+
+        textFieldCodCarte.setText(carteSelectata.getId().toString());
+        textFieldTitlu.setText(carteSelectata.getTitlu());
+        textFieldAutor.setText(carteSelectata.getAutor());
+    }
+
+    public void imprumutaCarte(MouseEvent mouseEvent) {
+        Carte carteSelectata = tabelCartiDisponibile.getSelectionModel().getSelectedItem();
+
+        if (carteSelectata != null){
+            try{
+                service.imprumutaCarte(carteSelectata.getId(), abonatConectat.getId());
+                MessageBox.showMessage(null, Alert.AlertType.INFORMATION,"Yeey!", "Imprumut finalizat cu succes!");
+                textFieldCodCarte.setText("");
+                textFieldTitlu.setText("");
+                textFieldAutor.setText("");
+            } catch (Exception e) {
+                MessageBox.showErrorMessage(null, e.getMessage());
+            }
+        } else {
+            MessageBox.showErrorMessage(null, "NIMIC SELECTAT");
+        }
+    }
+
 
     @Override
     public void carteUpdated() throws BibliotecaException, RemoteException {
@@ -69,6 +107,20 @@ public class AbonatController extends UnicastRemoteObject implements IBiblioteca
             tabelCartiDisponibile.refresh();
         });
     }
+
+    @Override
+    public void imprumutAdded() throws BibliotecaException, RemoteException {
+        Platform.runLater(()->{
+            modelCartiDisponibile.setAll(service.getToateCartileDisponibile());
+            tabelCartiDisponibile.refresh();
+
+            modelCartiImprumutate.setAll(service.getToateCartileImprumutate(abonatConectat.getId()));
+            tabelCartiImprumutate.refresh();
+        });
+    }
+
+
+
 
 
 }

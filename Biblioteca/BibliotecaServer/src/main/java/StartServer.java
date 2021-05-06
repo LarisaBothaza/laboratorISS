@@ -26,7 +26,7 @@ public class StartServer {
 
     public static void main(String[] args) {
 
-//        Imprumut test = new Imprumut(1,1, new Date());
+//        Imprumut test = new Imprumut(1,1, new Date(), false);
 ////        System.out.println("Creat: "+ test);
 //        ImprumutRepository imprumutRepository = new ImprumutHibernateRepo();
 ////

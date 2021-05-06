@@ -11,6 +11,7 @@ import services.IBibliotecaServices;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -55,8 +56,6 @@ public class ServiceImplementation implements IBibliotecaServices {
         }
     }
 
-
-
     @Override
     public synchronized void logoutB(Bibliotecar bibliotecar, IBibliotecaObserver client) throws BibliotecaException {
         bibliotecariLogati.remove(bibliotecar);
@@ -80,9 +79,10 @@ public class ServiceImplementation implements IBibliotecaServices {
     }
 
     @Override
-    public Abonat abonatConectat(String username, String parola) {
+    public synchronized Abonat abonatConectat(String username, String parola) {
         return abonatRepository.findAbonatByUsernameParola(username,parola);
     }
+
     @Override
     public synchronized void logoutA(Abonat abonat, IBibliotecaObserver client) throws BibliotecaException {
         abonatiLogati.remove(abonat);
@@ -99,7 +99,7 @@ public class ServiceImplementation implements IBibliotecaServices {
     }
 
     @Override
-    public List<CarteDTO> getToateCartileImprumutate(int idAbonat) {
+    public synchronized List<CarteDTO> getToateCartileImprumutate(int idAbonat) {
         List<CarteDTO> listaCartiDTO = new ArrayList<>();
         List<Imprumut> impumuturiActive = imprumutRepository.getImprumuturiActiveAbonat(idAbonat);
         impumuturiActive.forEach(imprumut->{
@@ -112,11 +112,22 @@ public class ServiceImplementation implements IBibliotecaServices {
     }
 
     @Override
-    public void adaugaCarte(String titlu, String autor) throws Exception {
+    public synchronized void adaugaCarte(String titlu, String autor) throws Exception {
         Carte carteNoua = new Carte(titlu,autor,true);
         carteRepository.add(carteNoua);
 
         notifyCarteUpdated();
+    }
+
+    @Override
+    public void imprumutaCarte(int idCarte, int idAbonat) throws Exception {
+        Imprumut imprumut = new Imprumut(idCarte, idAbonat, new Date(), false); //nu au cum saf ie null: cartea e selectata, iar abonat e cel logat
+        imprumutRepository.add(imprumut);
+
+        Carte carte = carteRepository.findById(idCarte);
+        modificaCarte(idCarte, carte.getTitlu(), carte.getAutor(), false);
+
+        notifyImprumutAdded();
     }
 
     @Override
@@ -135,8 +146,6 @@ public class ServiceImplementation implements IBibliotecaServices {
         notifyCarteUpdated();
     }
 
-
-
     private final int defaultThreadsNo=5;
 
     private void notifyCarteUpdated() {
@@ -154,6 +163,29 @@ public class ServiceImplementation implements IBibliotecaServices {
             executor.execute(() -> {
                 try {
                     o.getValue().carteUpdated();
+                } catch (BibliotecaException | RemoteException e) {
+                    System.err.println("Error notifying abonat adaugare carte " + e);
+                }
+            });
+        }
+        executor.shutdown();
+    }
+
+    private void notifyImprumutAdded() {
+        ExecutorService executor= Executors.newFixedThreadPool(defaultThreadsNo);
+        for(var o: bibliotecariLogati.entrySet()) {
+            executor.execute(() -> {
+                try {
+                    o.getValue().imprumutAdded();
+                } catch (BibliotecaException | RemoteException e) {
+                    System.err.println("Error notifying bibliotecar adaugare carte " + e);
+                }
+            });
+        }
+        for(var o: abonatiLogati.entrySet()) {
+            executor.execute(() -> {
+                try {
+                    o.getValue().imprumutAdded();
                 } catch (BibliotecaException | RemoteException e) {
                     System.err.println("Error notifying abonat adaugare carte " + e);
                 }

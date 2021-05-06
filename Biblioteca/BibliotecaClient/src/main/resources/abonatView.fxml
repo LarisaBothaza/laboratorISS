@@ -6,7 +6,7 @@
 
 <AnchorPane prefHeight="404.0" prefWidth="824.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AbonatController">
    <children>
-      <TableView fx:id="tabelCartiDisponibile" layoutX="27.0" layoutY="25.0" prefHeight="357.0" prefWidth="310.0">
+      <TableView fx:id="tabelCartiDisponibile" layoutX="27.0" layoutY="25.0" onMouseClicked="#selectCarte" prefHeight="357.0" prefWidth="310.0">
         <columns>
             <TableColumn prefWidth="75.0" text="Carti Disponibile">
                <columns>
@@ -38,17 +38,17 @@
                            <PropertyValueFactory property="id" />
                        </cellValueFactory>
                   </TableColumn>
-                   <TableColumn fx:id="tableColumnTitluImprumutate" prefWidth="150.0" text="Titlu" >
+                   <TableColumn fx:id="tableColumnTitluImprumutate" prefWidth="150.0" text="Titlu">
                        <cellValueFactory>
                            <PropertyValueFactory property="titlu" />
                        </cellValueFactory>
                    </TableColumn>
-                   <TableColumn fx:id="tableColumnAutorImprumutate" prefWidth="100.0" text="Autor" >
+                   <TableColumn fx:id="tableColumnAutorImprumutate" prefWidth="100.0" text="Autor">
                        <cellValueFactory>
                            <PropertyValueFactory property="autor" />
                        </cellValueFactory>
                    </TableColumn>
-                  <TableColumn fx:id="tableColumnDataImprumut" prefWidth="130.0" text="Data imprumut" >
+                  <TableColumn fx:id="tableColumnDataImprumut" prefWidth="130.0" text="Data imprumut">
                       <cellValueFactory>
                           <PropertyValueFactory property="dataImprumut" />
                       </cellValueFactory>
@@ -57,10 +57,10 @@
             </TableColumn>
          </columns>
       </TableView>
-      <Button fx:id="buttonImprumuta" layoutX="663.0" layoutY="90.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="107.0" text="Imprumuta" />
-      <TextField fx:id="textFieldCodCarte" layoutX="469.0" layoutY="56.0" />
+      <Button fx:id="buttonImprumuta" onMouseClicked="#imprumutaCarte" layoutX="663.0" layoutY="90.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="107.0" text="Imprumuta" />
+      <TextField fx:id="textFieldCodCarte" disable="true" layoutX="469.0" layoutY="56.0" />
       <Label layoutX="405.0" layoutY="60.0" text="Cod carte:" />
-      <TextField fx:id="textFieldCarte" layoutX="469.0" layoutY="101.0" />
+      <TextField fx:id="textFieldTitlu" layoutX="469.0" layoutY="101.0" />
       <Label layoutX="404.0" layoutY="105.0" text="Titlu carte:" />
       <TextField fx:id="textFieldAutor" layoutX="469.0" layoutY="144.0" />
       <Label layoutX="405.0" layoutY="148.0" text="Autor:" />

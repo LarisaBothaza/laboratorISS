@@ -20,7 +20,7 @@ public class ImprumutHibernateRepo implements ImprumutRepository {
     }
 
     @Override
-    public void add(Imprumut imprumut) throws Exception {
+    public void add(Imprumut imprumut) {
         try(Session session = sessionFactory.openSession()){
             Transaction tx=null;
             try{
