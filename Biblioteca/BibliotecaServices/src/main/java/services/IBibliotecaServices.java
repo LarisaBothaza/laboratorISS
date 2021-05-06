@@ -13,7 +13,11 @@ public interface IBibliotecaServices {
     public void logoutA(Abonat abonat, IBibliotecaObserver client) throws BibliotecaException;
 
     public List<Carte> getToateCartile();
+    public List<Carte> getToateCartileDisponibile();
+
     public void adaugaCarte (String titlu, String autor) throws Exception;
+    public void modificaCarte (Integer id,String titlu, String autor, Boolean stare) throws Exception;
+    public void stergeCarte (Integer id);
 
 /*    public List<ProbaDTO> getToateProbeleDTO()throws ConcursException;
     public List<Participant> getParticipantiInscrisiLaProba(int idProba);

@@ -24,8 +24,7 @@ public class BibliotecarController  extends UnicastRemoteObject implements IBibl
     private Bibliotecar bibliotecarConectat;
     private ObservableList<Carte> modelCarti = FXCollections.observableArrayList();
 
-    public BibliotecarController() throws RemoteException {
-    }
+    public BibliotecarController() throws RemoteException { }
 
     @FXML
     TableView<Carte> tabelCarti;
@@ -74,6 +73,64 @@ public class BibliotecarController  extends UnicastRemoteObject implements IBibl
 
     }
 
+    public void stergeCarte(MouseEvent mouseEvent) {
+        Carte carteSelectata = tabelCarti.getSelectionModel().getSelectedItem();
+
+        if (carteSelectata != null){
+            try{
+                service.stergeCarte(carteSelectata.getId());
+                MessageBox.showMessage(null, Alert.AlertType.INFORMATION,"Yeey!", "Stergere cu succes!");
+                textFdCodCarte.setText("");
+                textFdTitlu.setText("");
+                textFdAutor.setText("");
+            } catch (Exception e) {
+                MessageBox.showErrorMessage(null, e.getMessage());
+            }
+        }
+        else{
+            MessageBox.showErrorMessage(null, "NIMIC SELECTAT!");
+        }
+
+    }
+
+    public void modificaCarte(MouseEvent mouseEvent) {
+        Carte carteSelectata = tabelCarti.getSelectionModel().getSelectedItem();
+
+        if (carteSelectata != null){
+
+            String titlu = textFdTitlu.getText();
+            String autor = textFdAutor.getText();
+
+            String err = "";
+
+            if (titlu.length() < 3) {
+                err += "Titlu invalid!\n";
+            }
+            if ( autor.length() < 3){
+                err += "Autor invalid!\n";
+            }
+
+            if (err.length() == 0){
+                try{
+                    service.modificaCarte(carteSelectata.getId(), titlu, autor, carteSelectata.getDisponibila());
+                    MessageBox.showMessage(null, Alert.AlertType.INFORMATION,"Yeey!", "Carte modificata cu succes!");
+                    textFdCodCarte.setText("");
+                    textFdTitlu.setText("");
+                    textFdAutor.setText("");
+                } catch (Exception e) {
+                    MessageBox.showErrorMessage(null, e.getMessage());
+                }
+            }
+            else{
+                MessageBox.showErrorMessage(null, err);
+            }
+
+        }else{
+            MessageBox.showErrorMessage(null, "NIMIC SELECTAT!");
+        }
+
+    }
+
     public void adaugaCarte(MouseEvent mouseEvent) {
         String titlu = textFdTitlu.getText();
         String autor = textFdAutor.getText();
@@ -105,17 +162,13 @@ public class BibliotecarController  extends UnicastRemoteObject implements IBibl
     }
 
     @Override
-    public void carteUpdated(Carte carte) throws BibliotecaException, RemoteException {
-
-    }
-
-    @Override
-    public void carteAdded() throws BibliotecaException, RemoteException {
+    public void carteUpdated() throws BibliotecaException, RemoteException {
         Platform.runLater(()->{
             modelCarti.setAll(service.getToateCartile());
             tabelCarti.refresh();
         });
     }
+
 
 
 }

@@ -86,26 +86,58 @@ public class ServiceImplementation implements IBibliotecaServices {
     }
 
     @Override
+    public synchronized List<Carte> getToateCartileDisponibile() {
+        return carteRepository.toateCartileDisponibile();
+    }
+
+    @Override
     public void adaugaCarte(String titlu, String autor) throws Exception {
         Carte carteNoua = new Carte(titlu,autor,true);
         carteRepository.add(carteNoua);
 
-        notifyCarteAdded();
+        notifyCarteUpdated();
+    }
+
+    @Override
+    public void modificaCarte(Integer id, String titlu, String autor, Boolean stare) throws Exception {
+        Carte carteNoua = new Carte(titlu,autor,stare);
+        carteNoua.setId(id);
+        carteRepository.update(carteNoua);
+
+        notifyCarteUpdated();
+    }
+
+    @Override
+    public void stergeCarte(Integer id) {
+        carteRepository.delete(id);
+
+        notifyCarteUpdated();
     }
 
     private final int defaultThreadsNo=5;
 
-    private void notifyCarteAdded() {
+    private void notifyCarteUpdated() {
         ExecutorService executor= Executors.newFixedThreadPool(defaultThreadsNo);
         for(var o: bibliotecariLogati.entrySet()) {
             executor.execute(() -> {
                 try {
-                    o.getValue().carteAdded();
+                    o.getValue().carteUpdated();
                 } catch (BibliotecaException | RemoteException e) {
-                    System.err.println("Error notifying adaugare carte " + e);
+                    System.err.println("Error notifying bibliotecar adaugare carte " + e);
+                }
+            });
+        }
+        for(var o: abonatiLogati.entrySet()) {
+            executor.execute(() -> {
+                try {
+                    o.getValue().carteUpdated();
+                } catch (BibliotecaException | RemoteException e) {
+                    System.err.println("Error notifying abonat adaugare carte " + e);
                 }
             });
         }
         executor.shutdown();
     }
+
+
 }

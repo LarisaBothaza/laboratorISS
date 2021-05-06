@@ -44,7 +44,7 @@ public class AbonatHibernateRepo implements AbonatRepository {
     }
 
     @Override
-    public void delete(Abonat elem) {
+    public void delete(Integer integer) {
 
     }
 

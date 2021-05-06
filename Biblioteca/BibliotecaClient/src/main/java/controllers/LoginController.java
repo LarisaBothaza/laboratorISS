@@ -71,14 +71,16 @@ public class LoginController extends UnicastRemoteObject {
             try{
                 service.loginB(bibliotecar, bibliotecarController);
 
-                Stage stage=new Stage();
+                Stage stage = new Stage();
                 stage.setScene(new Scene(parentBibliotecar));
+
 
                 stage.setOnCloseRequest(event -> {
                     bibliotecarController.logout();
                     System.exit(0);
                 });
                 bibliotecarController.setBibliotecarConectat(bibliotecar);
+                stage.setTitle("Bibliotecar: " + bibliotecar.getUsername());
                 stage.show();
 
                 ((Node)(actionEvent.getSource())).getScene().getWindow().hide();
@@ -102,6 +104,7 @@ public class LoginController extends UnicastRemoteObject {
                     System.exit(0);
                 });
                 abonatController.setAbonatConectat(abonat);
+                stage.setTitle("Abonat: " + abonat.getUsername());
                 stage.show();
 
                 ((Node)(actionEvent.getSource())).getScene().getWindow().hide();

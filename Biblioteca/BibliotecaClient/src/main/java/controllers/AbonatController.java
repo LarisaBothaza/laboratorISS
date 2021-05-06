@@ -3,6 +3,11 @@ package controllers;
 import biblioteca.Abonat;
 import biblioteca.Bibliotecar;
 import biblioteca.Carte;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.TableView;
 import services.BibliotecaException;
 import services.IBibliotecaObserver;
 import services.IBibliotecaServices;
@@ -15,8 +20,15 @@ public class AbonatController extends UnicastRemoteObject implements IBiblioteca
 
     private IBibliotecaServices service;
     private Abonat abonatConectat;
+    private ObservableList<Carte> modelCartiDisponibile = FXCollections.observableArrayList();
 
-    public AbonatController() throws RemoteException {
+    public AbonatController() throws RemoteException { }
+
+    @FXML
+    TableView<Carte> tabelCartiDisponibile;
+
+    public void initialize() {
+        tabelCartiDisponibile.setItems(modelCartiDisponibile);
     }
 
     public void setContext(IBibliotecaServices service) throws RemoteException{
@@ -34,16 +46,21 @@ public class AbonatController extends UnicastRemoteObject implements IBiblioteca
 
     public void setAbonatConectat(Abonat abonatConectat) throws BibliotecaException {
         this.abonatConectat = abonatConectat;
-        //initModel();
+        initModel();
     }
+
+    public void initModel()  {
+        modelCartiDisponibile.setAll(service.getToateCartileDisponibile());
+    }
+
 
     @Override
-    public void carteUpdated(Carte carte) throws BibliotecaException, RemoteException {
-
+    public void carteUpdated() throws BibliotecaException, RemoteException {
+        Platform.runLater(()->{
+            modelCartiDisponibile.setAll(service.getToateCartileDisponibile());
+            tabelCartiDisponibile.refresh();
+        });
     }
 
-    @Override
-    public void carteAdded() throws BibliotecaException, RemoteException {
 
-    }
 }

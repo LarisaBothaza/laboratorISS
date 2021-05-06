@@ -47,9 +47,10 @@ public class BibliotecarHibernateRepo implements BibliotecarRepository {
     }
 
     @Override
-    public void delete(Bibliotecar elem) {
+    public void delete(Integer integer) {
 
     }
+
 
     @Override
     public void update(Bibliotecar elem) {
