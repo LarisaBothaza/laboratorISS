@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="416.0" prefWidth="686.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AbonatController">
+   <children>
+      <TableView layoutX="35.0" layoutY="40.0" prefHeight="200.0" prefWidth="220.0">
+        <columns>
+            <TableColumn prefWidth="75.0" text="Carti Disponibile">
+               <columns>
+                <TableColumn fx:id="tableColumnTOATECodCarte" prefWidth="79.0" text="Cod Carte" />
+                <TableColumn fx:id="tableColumnTOATETitlu" prefWidth="71.0" text="Titlu" />
+                  <TableColumn fx:id="tableColumnTOATEAutor" prefWidth="70.0" text="Autor" />
+               </columns>
+            </TableColumn>
+        </columns>
+      </TableView>
+      <TableView layoutX="300.0" layoutY="38.0" prefHeight="200.0" prefWidth="349.0">
+         <columns>
+            <TableColumn prefWidth="350.0" text="Carti Imprumutate">
+               <columns>
+                  <TableColumn fx:id="tableColumnCodCarteImprumutate" prefWidth="79.0" text="Cod Carte" />
+                  <TableColumn fx:id="tableColumnTitluImprumutate" prefWidth="71.0" text="Titlu" />
+                  <TableColumn fx:id="tableColumnAutorImprumutate" prefWidth="70.0" text="Autor" />
+                  <TableColumn fx:id="tableColumnDataImprumut" prefWidth="130.0" text="Data imprumut" />
+               </columns>
+            </TableColumn>
+         </columns>
+      </TableView>
+      <Button fx:id="buttonImprumuta" layoutX="441.0" layoutY="296.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="107.0" text="Imprumuta" />
+      <TextField fx:id="textFieldCodCarte" layoutX="247.0" layoutY="262.0" />
+      <Label layoutX="183.0" layoutY="266.0" text="Cod carte:" />
+      <TextField fx:id="textFieldCarte" layoutX="247.0" layoutY="307.0" />
+      <Label layoutX="182.0" layoutY="311.0" text="Titlu carte:" />
+      <TextField fx:id="textFieldAutor" layoutX="247.0" layoutY="350.0" />
+      <Label layoutX="183.0" layoutY="354.0" text="Autor:" />
+   </children>
+</AnchorPane>
