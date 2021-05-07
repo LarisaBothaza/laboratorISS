@@ -24,4 +24,7 @@ public interface IBibliotecaServices {
     public Abonat abonatConectat(String username, String parola);
 
     public void imprumutaCarte(int idCarte, int idAbonat) throws Exception;
+    public void returneazaCarte(int idCarte, String usernameAbonat) throws BibliotecaException;
+
+    String infosImprumut(Carte carteSelectata);
 }

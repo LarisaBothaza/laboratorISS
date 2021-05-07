@@ -121,13 +121,66 @@ public class ServiceImplementation implements IBibliotecaServices {
 
     @Override
     public void imprumutaCarte(int idCarte, int idAbonat) throws Exception {
-        Imprumut imprumut = new Imprumut(idCarte, idAbonat, new Date(), false); //nu au cum saf ie null: cartea e selectata, iar abonat e cel logat
+        Imprumut imprumut = new Imprumut(idCarte, idAbonat, new Date(), false); //nu au cum sa fie null: cartea e selectata, iar abonat e cel logat
         imprumutRepository.add(imprumut);
 
         Carte carte = carteRepository.findById(idCarte);
         modificaCarte(idCarte, carte.getTitlu(), carte.getAutor(), false);
 
-        notifyImprumutAdded();
+        notifyImprumutUpdated();
+    }
+
+    @Override
+    public void returneazaCarte(int idCarte, String usernameAbonat) throws BibliotecaException {
+        //verifcare ca exista cartea si abonatul
+        Carte carte = carteRepository.findById(idCarte);
+        Abonat abonat = abonatRepository.findAbonatByUsername(usernameAbonat);
+
+        String err = "";
+        if (carte == null){
+            err += "Cod carte inexistent!\n";
+        }
+
+        if (abonat == null){
+            err += "Username abonat inexistent!\n";
+        }
+
+        if (err.length() > 0){
+            throw new BibliotecaException(err);
+        } else{
+            //verificare acel imprumut exista ACTIV
+            Imprumut imprumutActiv = imprumutRepository.getImprumutActivCarteAbonat(idCarte, abonat.getId());
+            if(imprumutActiv == null){
+                throw new BibliotecaException("Nu exista imprumut ACTIV intre datele introduse!\n");
+            }else{
+                imprumutRepository.update(imprumutActiv); //returnat = true
+
+                carte.setDisponibila(true);
+                carteRepository.update(carte);
+
+                notifyImprumutUpdated();
+            }
+        }
+
+    }
+
+    @Override
+    public String infosImprumut(Carte carteSelectata) {
+        String string = "INFO:" + "\n";
+
+        Imprumut imprumut = imprumutRepository.getImprumutActivCarte(carteSelectata.getId());
+        Abonat abonat = abonatRepository.findById(imprumut.getIdAbonat());
+        string += abonat;
+        List<Imprumut> listaImprumuturi = imprumutRepository.getImprumuturiActiveAbonat(imprumut.getIdAbonat());
+
+        string += "Lista cartilor imprumutate: \n";
+
+        for (Imprumut x : listaImprumuturi){
+            Carte carte = carteRepository.findById(x.getIdCarte());
+            string += carte + "\n";
+        }
+
+        return string;
     }
 
     @Override
@@ -171,12 +224,12 @@ public class ServiceImplementation implements IBibliotecaServices {
         executor.shutdown();
     }
 
-    private void notifyImprumutAdded() {
+    private void notifyImprumutUpdated() {
         ExecutorService executor= Executors.newFixedThreadPool(defaultThreadsNo);
         for(var o: bibliotecariLogati.entrySet()) {
             executor.execute(() -> {
                 try {
-                    o.getValue().imprumutAdded();
+                    o.getValue().imprumutUpdated();
                 } catch (BibliotecaException | RemoteException e) {
                     System.err.println("Error notifying bibliotecar adaugare carte " + e);
                 }
@@ -185,7 +238,7 @@ public class ServiceImplementation implements IBibliotecaServices {
         for(var o: abonatiLogati.entrySet()) {
             executor.execute(() -> {
                 try {
-                    o.getValue().imprumutAdded();
+                    o.getValue().imprumutUpdated();
                 } catch (BibliotecaException | RemoteException e) {
                     System.err.println("Error notifying abonat adaugare carte " + e);
                 }

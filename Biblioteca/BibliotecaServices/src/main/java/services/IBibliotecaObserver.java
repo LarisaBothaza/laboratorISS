@@ -7,6 +7,6 @@ import java.rmi.RemoteException;
 
 public interface IBibliotecaObserver extends Remote {
     void carteUpdated() throws BibliotecaException, RemoteException;
-    void imprumutAdded() throws BibliotecaException, RemoteException;
+    void imprumutUpdated() throws BibliotecaException, RemoteException;
 
 }

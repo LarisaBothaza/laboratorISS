@@ -39,6 +39,26 @@ public class AbonatHibernateRepo implements AbonatRepository {
     }
 
     @Override
+    public Abonat findAbonatByUsername(String username) {
+        Abonat result = null;
+        try(Session session = sessionFactory.openSession()){
+            Transaction transaction = null;
+            try{
+                transaction = session.beginTransaction();
+                result = session.createQuery("from Abonat where username = ? ", Abonat.class)
+                        .setParameter(0,username).uniqueResult();
+
+                transaction.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+                if(transaction !=null)
+                    transaction.rollback();
+            }
+        }
+        return result;
+    }
+
+    @Override
     public void add(Abonat elem) throws Exception {
 
     }
@@ -54,8 +74,23 @@ public class AbonatHibernateRepo implements AbonatRepository {
     }
 
     @Override
-    public Abonat findById(Integer integer) {
-        return null;
+    public Abonat findById(Integer id) {
+        Abonat result = null;
+        try(Session session = sessionFactory.openSession()){
+            Transaction transaction = null;
+            try{
+                transaction = session.beginTransaction();
+                result = session.createQuery("from Abonat where id = ? ", Abonat.class)
+                        .setParameter(0,id).uniqueResult();
+
+                transaction.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+                if(transaction !=null)
+                    transaction.rollback();
+            }
+        }
+        return result;
     }
 
     @Override

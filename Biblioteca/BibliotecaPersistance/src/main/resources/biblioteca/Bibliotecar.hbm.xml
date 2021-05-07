@@ -9,7 +9,7 @@
             <generator class="increment"/>
         </id>
         <property name="nume" column = "nume"/>
-        <property name="username" column="username"/>
+        <property name="username" column="username" unique="true"/>
         <property name="parola" column="parola"/>
         <property name="email" column="email"/>
     </class>

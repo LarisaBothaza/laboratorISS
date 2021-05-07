@@ -109,7 +109,7 @@ public class AbonatController extends UnicastRemoteObject implements IBiblioteca
     }
 
     @Override
-    public void imprumutAdded() throws BibliotecaException, RemoteException {
+    public void imprumutUpdated() throws BibliotecaException, RemoteException {
         Platform.runLater(()->{
             modelCartiDisponibile.setAll(service.getToateCartileDisponibile());
             tabelCartiDisponibile.refresh();

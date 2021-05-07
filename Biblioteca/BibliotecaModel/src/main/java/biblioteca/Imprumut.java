@@ -70,6 +70,7 @@ public class Imprumut implements Entity<Integer>, Serializable {
                 ", idCarte=" + idCarte +
                 ", idAbonat=" + idAbonat +
                 ", dataImprumut=" + dataImprumut +
+                ", returnat=" + returnat +
                 '}';
     }
 }

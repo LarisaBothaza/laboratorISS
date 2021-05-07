@@ -55,11 +55,6 @@ public class Abonat extends Persoana{
     }
 
     @Override
-    public String toString() {
-        return super.toString();
-    }
-
-    @Override
     public String getEmail() {
         return super.getEmail();
     }
@@ -69,4 +64,11 @@ public class Abonat extends Persoana{
         super.setEmail(email);
     }
 
+    @Override
+    public String toString() {
+        return "Abonatul: " + getNume() + "\n" +
+                "ID: " + getId() + ", " +
+                "USERNAME: " + getUsername() + "\n" +
+                "email: " + getEmail() + "\n" + "\n" ;
+    }
 }
