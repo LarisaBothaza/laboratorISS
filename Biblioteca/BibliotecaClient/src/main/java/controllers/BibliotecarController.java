@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -45,6 +46,23 @@ public class BibliotecarController  extends UnicastRemoteObject implements IBibl
 
     public void initialize() {
         tabelCarti.setItems(modelCarti);
+        colorTable();
+    }
+
+    public void colorTable(){
+        tabelCarti.setRowFactory(tv -> new TableRow<Carte>(){
+            @Override
+            protected void updateItem(Carte item, boolean empty) {
+                super.updateItem(item,empty);
+                if (empty || item == null) {
+                    setStyle("");
+                } else if (item.getDisponibila()){
+                    setStyle("-fx-background-color: #AF7AC5");
+                } else {
+                    setStyle("");
+                }
+            }
+        });
     }
 
     public void setContext(IBibliotecaServices service) throws RemoteException{
@@ -222,7 +240,9 @@ public class BibliotecarController  extends UnicastRemoteObject implements IBibl
         Platform.runLater(()->{
             modelCarti.setAll(service.getToateCartile());
             tabelCarti.refresh();
+            colorTable();
         });
+
     }
 
     @Override
@@ -230,7 +250,9 @@ public class BibliotecarController  extends UnicastRemoteObject implements IBibl
         Platform.runLater(()->{
             modelCarti.setAll(service.getToateCartile());
             tabelCarti.refresh();
+            colorTable();
         });
+
     }
 
 

@@ -61,6 +61,6 @@ public class Carte implements Entity<Integer>, Serializable {
     public String toString() {
         return  "cod: " + id + ", " +
                 "titlu: " + titlu + ", " +
-                "autor: " + autor + "\n";
+                "autor: " + autor;
     }
 }
