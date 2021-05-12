@@ -13,10 +13,11 @@ O bibliotecă oferă o aplicație de gestiune: cont pentru bibliotecar și cont 
 >	- sterge o carte din biblioteca
 >	- modifica datele unei carti
 >	- returneaza o carte a unui abonat
+>	- vizualizare abonat pentru o carte imprumutata
  	 
-Pentru un abonat, se retin în sistem informații legate de cnp, nume, adresa, telefon și un cod unic de identificare a acestuia în cadrul bibliotecii. 
+Pentru un abonat, se retin în sistem informații legate de nume, email și un username unic de identificare a acestuia în cadrul bibliotecii precum si parola contului. 
 
-Pentru un bibliotecar, se retin în sistem informații legate de cnp, nume, adresa, telefon, un cod unic de identificare a acestuia în cadrul bibliotecii.
+Pentru un bibliotecar, se retin în sistem informații legate de nume, email, un usernmae unic de identificare a acestuia în cadrul bibliotecii si parola contului.
 Fiecare carte poate exista în unul sau mai multe exemplare, identificate prin coduri unice.
 
 Pentru a putea folosi un sistemul, un abonat trebuie să se autentifice. Dupa autentificare, acesta vede lista exemplarelor disponibile în acel moment si poate imprumuta unul sau mai multe exemplare.
