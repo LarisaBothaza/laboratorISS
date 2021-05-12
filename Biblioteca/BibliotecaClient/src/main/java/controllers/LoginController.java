@@ -69,7 +69,7 @@ public class LoginController extends UnicastRemoteObject {
             Bibliotecar bibliotecar = new Bibliotecar("", username, parola, "");
 
             try{
-                service.loginB(bibliotecar, bibliotecarController);
+                service.loginB(username, parola , bibliotecarController);
 
                 Stage stage = new Stage();
                 stage.setScene(new Scene(parentBibliotecar));
@@ -94,7 +94,7 @@ public class LoginController extends UnicastRemoteObject {
             Abonat abonat = new Abonat("", username, parola, "");
 
             try{
-                service.loginA(abonat, abonatController);
+                service.loginA(username, parola, abonatController);
 
                 Stage stage=new Stage();
                 stage.setScene(new Scene(parentAbonat));

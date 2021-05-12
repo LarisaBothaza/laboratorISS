@@ -41,9 +41,9 @@ public class ServiceImplementation implements IBibliotecaServices {
     }
 
     @Override
-    public synchronized void loginB(Bibliotecar bibliotecar, IBibliotecaObserver obs) throws BibliotecaException {
-        Bibliotecar bibliotecarR = bibliotecarRepository.findBibliotecarByUsernameParola(bibliotecar.getUsername(),
-                bibliotecar.getParola());
+    public synchronized void loginB(String username, String parola, IBibliotecaObserver obs) throws BibliotecaException {
+        Bibliotecar bibliotecarR = bibliotecarRepository.findBibliotecarByUsernameParola(username,
+                parola);
 
         if(bibliotecarR != null) {
             if(bibliotecariLogati.get(bibliotecarR.getId()) != null){
@@ -62,9 +62,9 @@ public class ServiceImplementation implements IBibliotecaServices {
     }
 
     @Override
-    public synchronized void loginA(Abonat abonat, IBibliotecaObserver obs) throws BibliotecaException {
-        Abonat abonatR = abonatRepository.findAbonatByUsernameParola(abonat.getUsername(),
-                abonat.getParola());
+    public synchronized void loginA(String username, String parola, IBibliotecaObserver obs) throws BibliotecaException {
+        Abonat abonatR = abonatRepository.findAbonatByUsernameParola(username,
+                parola);
 
         if(abonatR != null) {
             if(abonatiLogati.get(abonatR.getId()) != null){

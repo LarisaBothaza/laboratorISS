@@ -7,10 +7,10 @@ import biblioteca.CarteDTO;
 import java.util.List;
 
 public interface IBibliotecaServices {
-    public void loginB(Bibliotecar bibliotecar, IBibliotecaObserver obs) throws BibliotecaException ;
+    public void loginB(String username, String parola, IBibliotecaObserver obs) throws BibliotecaException ;
     public void logoutB(Bibliotecar bibliotecar, IBibliotecaObserver client) throws BibliotecaException;
 
-    public void loginA(Abonat abonat, IBibliotecaObserver obs) throws BibliotecaException ;
+    public void loginA(String username, String parola, IBibliotecaObserver obs) throws BibliotecaException ;
     public void logoutA(Abonat abonat, IBibliotecaObserver client) throws BibliotecaException;
 
     public List<Carte> getToateCartile();
